@@ -7,3 +7,12 @@ export const THEMES: ThemeOption[] = [
   { id: 'birthday', name: 'Birthday', icon: '🎂', color: 'from-purple-400 to-pink-500' },
   { id: 'anniversary', name: 'Anniversary', icon: '💝', color: 'from-red-400 to-rose-500' }
 ];
+
+export const GREETINGS = [
+  { value: 'Hello', label: 'Hello' },
+  { value: 'Hi', label: 'Hi' },
+  { value: 'Dear', label: 'Dear' },
+  { value: 'My dearest', label: 'My Dearest' },
+  { value: 'Sweetheart', label: 'Sweetheart' },
+  { value: 'Love', label: 'Love' },
+];

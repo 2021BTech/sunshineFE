@@ -181,7 +181,7 @@ export default function Landing() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Make Every Morning Special
+              Make Every Moment Special
             </h2>
             <p className="text-xl text-purple-200">
               Create unforgettable moments with these amazing features

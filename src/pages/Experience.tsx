@@ -5,7 +5,7 @@ import BackgroundScene from "../components/ui/BackgroundScene";
 import FloatingParticles from "../components/ui/FloatingParticles";
 import AnimatedText from "../components/ui/AnimatedText";
 import { experienceService } from "../services/experience";
-import type { ExperienceData, ThemeType } from "../types/experience";
+import type { ExperienceData } from "../types/experience";
 import { calculateTimeUntil, formatTimeUntil } from "../utils/time";
 
 export default function Experience() {
@@ -96,12 +96,12 @@ export default function Experience() {
   }
 
   return (
-    <BackgroundScene theme={experience.theme as ThemeType}>
-      <FloatingParticles theme={experience.theme as ThemeType} />
+    <BackgroundScene theme={experience.theme}>
+      <FloatingParticles theme={experience.theme} />
       <main id="main-content" className="min-h-screen flex items-center justify-center px-4 py-8 relative z-10">
         <div className="max-w-3xl w-full text-center">
           <AnimatedText
-            text={`Hello, ${experience.recipientName}!`}
+            text={`${experience.greeting || 'Hello'}, ${experience.recipientName}!`}
             className="text-3xl sm:text-4xl md:text-6xl font-bold mb-6 md:mb-8 drop-shadow-lg"
             type="gradient"
           />

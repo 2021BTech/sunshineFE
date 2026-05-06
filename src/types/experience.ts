@@ -3,6 +3,7 @@ export interface CreateExperienceData {
   recipientName: string;
   message: string;
   theme: ThemeType;
+  greeting?: string;
   scheduledAt: string;
   audioUrl?: string | null;
 }
@@ -13,13 +14,15 @@ export interface ExperienceResponse {
 }
 
 export interface ExperienceData {
+  id: string;
   recipientName: string;
   message: string;
-  theme: string;
-  audioUrl: string | null;
+  theme: ThemeType;
+  greeting?: string;
+  audioUrl?: string;
   scheduledAt: string;
-  viewCount: number;
   createdAt: string;
+  delivered: boolean;
 }
 
 export interface Experience {

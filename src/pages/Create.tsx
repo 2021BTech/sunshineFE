@@ -7,7 +7,7 @@ import MessagePreview from '../components/ui/MessagePreview';
 import FloatingParticles from '../components/ui/FloatingParticles';
 import { experienceService } from '../services/experience';
 import type { CreateExperienceData } from '../types/experience';
-import { THEMES } from '../constants/themes';
+import { THEMES, GREETINGS } from '../constants/themes';
 import { AlertCircle, ArrowLeft } from 'lucide-react';
 
 export default function Create() {
@@ -16,6 +16,7 @@ export default function Create() {
     recipientName: '',
     message: '',
     theme: 'romantic',
+    greeting: 'Hello',
     scheduledAt: ''
   });
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
@@ -32,6 +33,7 @@ export default function Create() {
         recipientName: formData.recipientName,
         message: formData.message,
         theme: formData.theme,
+        greeting: formData.greeting,
         scheduledAt: new Date(formData.scheduledAt).toISOString(),
         audioUrl: audioUrl || null
       });
@@ -138,6 +140,30 @@ export default function Create() {
                         className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                         aria-describedby={error ? "form-error" : undefined}
                       />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-purple-200 mb-3">
+                        Greeting (Optional)
+                      </label>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2" role="radiogroup" aria-label="Greeting selection">
+                        {GREETINGS.map((greeting) => (
+                          <button
+                            type="button"
+                            key={greeting.value}
+                            role="radio"
+                            onClick={() => setFormData({ ...formData, greeting: greeting.value })}
+                            aria-checked={formData.greeting === greeting.value}
+                            className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                              formData.greeting === greeting.value
+                                ? 'bg-linear-to-r from-purple-600 to-pink-600 text-white shadow-lg'
+                                : 'bg-white/10 hover:bg-white/20 text-purple-200'
+                            }`}
+                          >
+                            {greeting.label}
+                          </button>
+                        ))}
+                      </div>
                     </div>
 
                     <div>
