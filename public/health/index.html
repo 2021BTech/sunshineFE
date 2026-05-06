@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Health Check - Sunrise</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    .status {
+      text-align: center;
+      padding: 2rem;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 1rem;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .ok { color: #10b981; }
+  </style>
+</head>
+<body>
+  <div class="status">
+    <h1>✓ Sunrise Client</h1>
+    <p class="ok">Status: Operational</p>
+    <p>Timestamp: <span id="timestamp"></span></p>
+  </div>
+  <script>
+    document.getElementById('timestamp').textContent = new Date().toISOString();
+  </script>
+</body>
+</html>

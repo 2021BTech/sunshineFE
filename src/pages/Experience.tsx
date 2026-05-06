@@ -1,54 +1,63 @@
-import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import axios from 'axios'
-import { motion } from 'framer-motion'
-import BackgroundScene from '../components/ui/BackgroundScene'
-import AnimatedText from '../components/ui/AnimatedText'
-
-
-interface Experience {
-  recipientName: string
-  message: string
-  theme: string
-  audioUrl?: string
-  scheduledAt: string
-}
+import { useEffect, useState, useRef } from "react";
+import { useParams } from "react-router-dom";
+import { motion } from "framer-motion";
+import BackgroundScene from "../components/ui/BackgroundScene";
+import AnimatedText from "../components/ui/AnimatedText";
+import { experienceService } from "../services/experience";
+import type { ExperienceData } from "../types/experience";
+import { calculateTimeUntil, formatTimeUntil } from "../utils/time";
 
 export default function Experience() {
-  const { id } = useParams()
-  const [experience, setExperience] = useState<Experience | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
-  //const [audio] = useState<HTMLAudioElement | null>(null)
+  const { id } = useParams();
+  const [experience, setExperience] = useState<ExperienceData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [audioPlaying, setAudioPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(() => Date.now());
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
-    const fetchExperience = async () => {
-      try {
-        const response = await axios.get(`/api/experience/${id}`)
-        setExperience(response.data)
-        
-        // Auto-play audio if exists
-        if (response.data.audioUrl) {
-          const audioElement = new Audio(response.data.audioUrl)
-          audioElement.play().catch(e => console.log('Auto-play prevented:', e))
-        }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (err: any) {
-        setError(err.response?.data?.message || 'Experience not found')
-      } finally {
-        setLoading(false)
-      }
+    if (!id) {
+      return;
     }
 
-    fetchExperience()
-  }, [id])
+    const fetchExperience = async () => {
+      try {
+        const data = await experienceService.getById(id);
+        setExperience(data);
+      } catch (err) {
+        const error = err as { response?: { data?: { message?: string } } };
+        setError(error.response?.data?.message || "Experience not found");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchExperience();
+  }, [id]);
+
+
+
+  // Update current time every 30 seconds to refresh the countdown
+  useEffect(() => {
+    timerRef.current = setInterval(() => {
+      setCurrentTime(Date.now());
+    }, 30000); 
+
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, []);
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-amber-50 to-rose-50">
         <div className="text-2xl text-gray-600">Loading your surprise...</div>
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -59,20 +68,17 @@ export default function Experience() {
           <div className="text-xl text-gray-600">{error}</div>
         </div>
       </div>
-    )
+    );
   }
 
-  if (!experience) return null
+  if (!experience) return null;
 
   // Check if it's time to show
-  const scheduledTime = new Date(experience.scheduledAt)
-  const now = new Date()
-  const isAvailable = now >= scheduledTime
+  const scheduledTimestamp = new Date(experience.scheduledAt).getTime();
+  const isAvailable = currentTime >= scheduledTimestamp;
 
   if (!isAvailable) {
-    const timeUntil = scheduledTime.getTime() - now.getTime()
-    const hoursUntil = Math.floor(timeUntil / (1000 * 60 * 60))
-    const minutesUntil = Math.floor((timeUntil % (1000 * 60 * 60)) / (1000 * 60))
+    const timeUntil = calculateTimeUntil(new Date(scheduledTimestamp));
 
     return (
       <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-amber-50 to-rose-50">
@@ -80,31 +86,41 @@ export default function Experience() {
           <div className="text-6xl mb-4">⏰</div>
           <h2 className="text-2xl font-semibold mb-2">Coming Soon!</h2>
           <p className="text-gray-600">
-            This morning surprise will be available in {hoursUntil}h {minutesUntil}m
+            This morning surprise will be available in {formatTimeUntil(timeUntil)}
           </p>
+          <p className="text-sm text-gray-500 mt-2">Page refreshes automatically</p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
     <BackgroundScene theme={experience.theme}>
-      <div className="min-h-screen flex items-center justify-center px-4 relative z-10">
-        <div className="max-w-2xl w-full text-center">
+      <main id="main-content" className="min-h-screen flex items-center justify-center px-4 relative z-10">
+        <div className="max-w-3xl w-full text-center">
           <AnimatedText
             text={`Good morning, ${experience.recipientName}!`}
-            className="text-4xl md:text-6xl font-bold text-white mb-8 drop-shadow-lg"
+            className="text-4xl md:text-6xl font-bold mb-8 drop-shadow-lg"
+            type="gradient"
           />
-          
+
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-            className="bg-white/20 backdrop-blur-md rounded-2xl p-8 shadow-xl"
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ delay: 0.5, duration: 0.8, type: "spring" }}
+            className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 md:p-12 shadow-2xl border border-white/20 relative overflow-hidden"
           >
-            <p className="text-xl md:text-2xl text-white leading-relaxed">
-              {experience.message}
-            </p>
+            {/* Decorative quote marks */}
+            <div className="absolute top-4 left-6 text-6xl text-white/10 font-serif">"</div>
+            <div className="absolute bottom-4 right-6 text-6xl text-white/10 font-serif rotate-180">"</div>
+            
+            <AnimatedText
+              text={experience.message}
+              className="text-xl md:text-3xl text-white leading-relaxed font-light italic"
+              type="words"
+              delay={0.8}
+              once={false}
+            />
           </motion.div>
 
           {experience.audioUrl && (
@@ -114,14 +130,33 @@ export default function Experience() {
               transition={{ delay: 0.8 }}
               className="mt-8"
             >
-              <audio controls autoPlay className="mx-auto">
+              <audio
+                ref={audioRef}
+                controls
+                className="mx-auto"
+                aria-label="Voice message from your special person"
+                onPlay={() => setAudioPlaying(true)}
+                onPause={() => setAudioPlaying(false)}
+              >
+                <source src={experience.audioUrl} type="audio/mpeg" />
                 <source src={experience.audioUrl} type="audio/webm" />
+                <source src={experience.audioUrl} type="audio/mp4" />
                 Your browser does not support the audio element.
               </audio>
+              <p className="text-white/70 text-sm mt-2 text-center">
+                {audioPlaying ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                    Playing voice message...
+                  </span>
+                ) : (
+                  "Click play to hear your voice message"
+                )}
+              </p>
             </motion.div>
           )}
-        </div>
-      </div>
-    </BackgroundScene>
-  )
-}
+         </div>
+       </main>
+     </BackgroundScene>
+   );
+ }

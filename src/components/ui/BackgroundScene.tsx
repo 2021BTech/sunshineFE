@@ -11,27 +11,23 @@ export default function BackgroundScene({ theme, preview = false, children }: Ba
     switch (theme) {
       case 'romantic':
         return {
-          gradient: 'bg-gradient-to-br from-pink-400 via-red-400 to-rose-600',
-          pattern: 'bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))]',
-          overlay: 'bg-[url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M30 5 L35 20 L50 20 L38 30 L42 45 L30 35 L18 45 L22 30 L10 20 L25 20 Z" fill="rgba(255,255,255,0.05)" fill-rule="evenodd"/%3E%3C/svg%3E")]'
+          gradient: 'bg-linear-to-br from-pink-900 via-rose-800 to-red-900',
+          particles: 'from-pink-400 to-rose-400'
         }
       case 'calm':
         return {
-          gradient: 'bg-gradient-to-br from-blue-400 via-cyan-400 to-teal-600',
-          pattern: 'bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))]',
-          overlay: 'bg-[url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M20 10 L40 10 L50 30 L40 50 L20 50 L10 30 Z" fill="rgba(255,255,255,0.05)" fill-rule="evenodd"/%3E%3C/svg%3E")]'
+          gradient: 'bg-linear-to-br from-blue-900 via-cyan-800 to-teal-900',
+          particles: 'from-blue-400 to-cyan-400'
         }
       case 'playful':
         return {
-          gradient: 'bg-gradient-to-br from-yellow-400 via-orange-400 to-red-600',
-          pattern: 'bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))]',
-          overlay: 'bg-[url("data:image/svg+xml,%3Csvg width="52" height="52" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg"%3E%3Ccircle cx="26" cy="26" r="10" fill="rgba(255,255,255,0.05)"/%3E%3C/svg%3E")]'
+          gradient: 'bg-linear-to-br from-yellow-900 via-orange-800 to-red-900',
+          particles: 'from-yellow-400 to-orange-400'
         }
       default:
         return {
-          gradient: 'bg-gradient-to-br from-purple-600 to-pink-600',
-          pattern: '',
-          overlay: ''
+          gradient: 'bg-linear-to-br from-slate-900 via-purple-900 to-slate-900',
+          particles: 'from-purple-400 to-pink-400'
         }
     }
   }
@@ -40,14 +36,15 @@ export default function BackgroundScene({ theme, preview = false, children }: Ba
 
   if (preview) {
     return (
-      <div className={`absolute inset-0 ${background.gradient} ${background.pattern} ${background.overlay}`}>
+      <div className={`absolute inset-0 ${background.gradient}`}>
         <div className="absolute inset-0 bg-black/20" />
       </div>
     )
   }
 
   return (
-    <div className={`relative min-h-screen ${background.gradient} ${background.pattern} ${background.overlay} overflow-hidden`}>
+    <div className={`relative min-h-screen ${background.gradient} overflow-hidden`}>
+      {/* Animated background elements */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -56,7 +53,31 @@ export default function BackgroundScene({ theme, preview = false, children }: Ba
       >
         <div className="absolute inset-0 bg-black/30" />
         
-        {/* Animated gradient overlay */}
+        {/* Floating particles effect */}
+        <div className="absolute inset-0 overflow-hidden">
+          {[...Array(20)].map((_, i) => (
+            <motion.div
+              key={i}
+              className={`absolute w-2 h-2 bg-linear-to-r ${background.particles} rounded-full opacity-20`}
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                y: [0, -100, 0],
+                opacity: [0.2, 0.5, 0.2],
+                scale: [1, 1.5, 1],
+              }}
+              transition={{
+                duration: 5 + Math.random() * 5,
+                repeat: Infinity,
+                delay: Math.random() * 5,
+              }}
+            />
+          ))}
+        </div>
+        
+        {/* Gradient overlay */}
         <motion.div
           className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent"
           initial={{ opacity: 0 }}
