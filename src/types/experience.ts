@@ -2,7 +2,7 @@
 export interface CreateExperienceData {
   recipientName: string;
   message: string;
-  theme: 'romantic' | 'calm' | 'playful';
+  theme: ThemeType;
   scheduledAt: string;
   audioUrl?: string | null;
 }
@@ -30,7 +30,7 @@ export interface Experience {
   scheduledAt: string;
 }
 
-export type ThemeType = 'romantic' | 'calm' | 'playful';
+export type ThemeType = 'romantic' | 'calm' | 'playful' | 'birthday' | 'anniversary';
 
 export interface ThemeOption {
   id: ThemeType;

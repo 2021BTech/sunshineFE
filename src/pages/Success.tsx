@@ -37,9 +37,9 @@ export default function Success() {
   };
 
   const shareOnWhatsApp = () => {
-    const text = encodeURIComponent(
-      "✨ I created a special morning surprise for you! 🌅\n\nScan the QR code or click the link to open your surprise:",
-    );
+      const text = encodeURIComponent(
+        "✨ I created a special surprise for you! 🎉\n\nScan the QR code or click the link to open your surprise:"
+      );
     window.open(`https://wa.me/?text=${text}%0A${shareUrl}`, "_blank");
   };
 
@@ -114,7 +114,7 @@ export default function Success() {
 
         {/* Success Card */}
         <div
-          className="bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-white/20"
+          className="bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl p-6 sm:p-8 border border-white/20"
           role="status"
           aria-live="polite"
         >
@@ -148,10 +148,10 @@ export default function Success() {
             <h2 className="text-3xl md:text-4xl font-bold mb-2 bg-linear-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
               Morning Surprise Created!
             </h2>
-            <p className="text-purple-200 mb-6">
-              Your beautiful morning experience has been created. Share it with
-              your special person:
-            </p>
+          <p className="text-purple-200 mb-6">
+            Your beautiful surprise has been created. Share it with
+            your special person:
+          </p>
           </motion.div>
 
           {/* QR Code Toggle Button */}
@@ -185,7 +185,7 @@ export default function Success() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
-              className="bg-linear-to-br from-white/5 to-purple-500/10 rounded-xl p-6 mb-6 border border-white/10"
+              className="bg-linear-to-br from-white/5 to-purple-500/10 rounded-xl p-4 sm:p-6 mb-6 border border-white/10"
             >
                 <div id="qr-image-container">
                   <div className="text-center mb-4">
@@ -207,7 +207,7 @@ export default function Success() {
                     >
                       <StyledQRCode
                         value={shareUrl}
-                        size={isQRExpanded ? 500 : 400}
+                        size={isQRExpanded ? 400 : 300}
                         gradientColors={["#8b5cf6", "#ec4899"]}
                         frame={true}
                         frameColor="#ffffff"
@@ -293,7 +293,7 @@ export default function Success() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={shareOnWhatsApp}
-              aria-label="Share this morning surprise on WhatsApp"
+                aria-label="Share this surprise on WhatsApp"
               className="w-full bg-linear-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 group"
             >
               <Share2

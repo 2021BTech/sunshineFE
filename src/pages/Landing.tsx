@@ -33,18 +33,18 @@ export default function Landing() {
       description: "Choose from romantic, calm, or playful animated themes",
       color: "from-blue-500 to-cyan-500"
     },
-    {
-      icon: "⏰",
-      title: "Schedule Delivery",
-      description: "Set the perfect time for your morning surprise",
-      color: "from-orange-500 to-yellow-500"
-    },
-    {
-      icon: "🔗",
-      title: "Shareable Links",
-      description: "Create a unique link to share your morning surprise",
-      color: "from-green-500 to-emerald-500"
-    }
+      {
+        icon: "⏰",
+        title: "Schedule Delivery",
+        description: "Set the perfect time for your surprise",
+        color: "from-orange-500 to-yellow-500"
+      },
+      {
+        icon: "🔗",
+        title: "Shareable Links",
+        description: "Create a unique link to share your surprise",
+        color: "from-green-500 to-emerald-500"
+      }
   ]
 
   return (
@@ -128,7 +128,7 @@ export default function Landing() {
             transition={{ delay: 0.2, duration: 0.8 }}
             className="text-xl md:text-2xl text-purple-100 mb-4 max-w-2xl mx-auto"
           >
-            Be the best part of their morning
+            Be the best part of their day
           </motion.p>
 
           <motion.p
@@ -137,7 +137,7 @@ export default function Landing() {
             transition={{ delay: 0.3, duration: 0.8 }}
             className="text-lg text-purple-200 mb-12 max-w-2xl mx-auto"
           >
-            Create a magical morning experience for someone special with a personalized message, 
+            Create a magical experience for someone special with a personalized message, 
             voice note, and beautiful animations that will make their day unforgettable.
           </motion.p>
 
@@ -153,7 +153,7 @@ export default function Landing() {
               onClick={() => navigate('/create')}
               className="px-8 py-4 bg-linear-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-full shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 text-lg"
             >
-              Create Morning Surprise ✨
+              Create Surprise ✨
             </motion.button>
             
             <motion.button
@@ -232,7 +232,7 @@ export default function Landing() {
             className="bg-linear-to-r from-purple-600/20 to-pink-600/20 backdrop-blur-xl rounded-3xl p-12 border border-white/20"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Ready to Make Their Morning?
+               Ready to Make Their Day?
             </h2>
             <p className="text-xl text-purple-200 mb-8">
               Create a beautiful surprise that they'll remember forever
@@ -243,7 +243,7 @@ export default function Landing() {
               onClick={() => navigate('/create')}
               className="px-8 py-4 bg-linear-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-full shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 text-lg"
             >
-              Get Started Now 🚀
+               Get Started Now
             </motion.button>
           </motion.div>
         </div>

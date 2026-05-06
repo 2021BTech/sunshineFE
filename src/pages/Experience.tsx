@@ -2,9 +2,10 @@ import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import BackgroundScene from "../components/ui/BackgroundScene";
+import FloatingParticles from "../components/ui/FloatingParticles";
 import AnimatedText from "../components/ui/AnimatedText";
 import { experienceService } from "../services/experience";
-import type { ExperienceData } from "../types/experience";
+import type { ExperienceData, ThemeType } from "../types/experience";
 import { calculateTimeUntil, formatTimeUntil } from "../utils/time";
 
 export default function Experience() {
@@ -85,9 +86,9 @@ export default function Experience() {
         <div className="text-center">
           <div className="text-6xl mb-4">⏰</div>
           <h2 className="text-2xl font-semibold mb-2">Coming Soon!</h2>
-          <p className="text-gray-600">
-            This morning surprise will be available in {formatTimeUntil(timeUntil)}
-          </p>
+            <p className="text-gray-600">
+              This surprise will be available in {formatTimeUntil(timeUntil)}
+            </p>
           <p className="text-sm text-gray-500 mt-2">Page refreshes automatically</p>
         </div>
       </div>
@@ -95,12 +96,13 @@ export default function Experience() {
   }
 
   return (
-    <BackgroundScene theme={experience.theme}>
-      <main id="main-content" className="min-h-screen flex items-center justify-center px-4 relative z-10">
+    <BackgroundScene theme={experience.theme as ThemeType}>
+      <FloatingParticles theme={experience.theme as ThemeType} />
+      <main id="main-content" className="min-h-screen flex items-center justify-center px-4 py-8 relative z-10">
         <div className="max-w-3xl w-full text-center">
           <AnimatedText
-            text={`Good morning, ${experience.recipientName}!`}
-            className="text-4xl md:text-6xl font-bold mb-8 drop-shadow-lg"
+            text={`Hello, ${experience.recipientName}!`}
+            className="text-3xl sm:text-4xl md:text-6xl font-bold mb-6 md:mb-8 drop-shadow-lg"
             type="gradient"
           />
 
@@ -108,15 +110,15 @@ export default function Experience() {
             initial={{ opacity: 0, y: 30, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ delay: 0.5, duration: 0.8, type: "spring" }}
-            className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 md:p-12 shadow-2xl border border-white/20 relative overflow-hidden"
+            className="bg-white/10 backdrop-blur-xl rounded-3xl p-6 sm:p-8 md:p-12 shadow-2xl border border-white/20 relative overflow-hidden"
           >
             {/* Decorative quote marks */}
-            <div className="absolute top-4 left-6 text-6xl text-white/10 font-serif">"</div>
-            <div className="absolute bottom-4 right-6 text-6xl text-white/10 font-serif rotate-180">"</div>
+            <div className="absolute top-2 sm:top-4 left-4 sm:left-6 text-4xl sm:text-6xl text-white/10 font-serif">"</div>
+            <div className="absolute bottom-2 sm:bottom-4 right-4 sm:right-6 text-4xl sm:text-6xl text-white/10 font-serif rotate-180">"</div>
             
             <AnimatedText
               text={experience.message}
-              className="text-xl md:text-3xl text-white leading-relaxed font-light italic"
+              className="text-lg sm:text-xl md:text-3xl text-white leading-relaxed font-light italic"
               type="words"
               delay={0.8}
               once={false}

@@ -24,6 +24,16 @@ export default function BackgroundScene({ theme, preview = false, children }: Ba
           gradient: 'bg-linear-to-br from-yellow-900 via-orange-800 to-red-900',
           particles: 'from-yellow-400 to-orange-400'
         }
+      case 'birthday':
+        return {
+          gradient: 'bg-linear-to-br from-purple-900 via-pink-800 to-rose-900',
+          particles: 'from-purple-400 to-pink-400'
+        }
+      case 'anniversary':
+        return {
+          gradient: 'bg-linear-to-br from-red-900 via-rose-800 to-maroon-900',
+          particles: 'from-red-400 to-rose-400'
+        }
       default:
         return {
           gradient: 'bg-linear-to-br from-slate-900 via-purple-900 to-slate-900',
