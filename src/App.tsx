@@ -6,11 +6,13 @@ import Success from './pages/Success'
 import Experience from './pages/Experience'
 import {  AnimatePresence } from 'framer-motion'
 import { ErrorBoundary } from './components/ErrorBoundary'
+import ScrollToTop from "./components/ui/ScrollToTop";
 
 function App() {
   return (
     <ErrorBoundary>
       <Router>
+          <ScrollToTop />
         {/* Skip navigation for keyboard users */}
         <a href="#main-content" className="skip-to-content">
           Skip to main content
